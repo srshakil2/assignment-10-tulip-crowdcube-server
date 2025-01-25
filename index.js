@@ -51,6 +51,20 @@ async function run() {
       const result = await campaignCollection.findOne(query);
       res.send(result);
     });
+
+    app.post("/campaign", async (req, res) => {
+      const newCampaign = req.body;
+      //   console.log(newCampaign);
+      const result = await campaignCollection.insertOne(newCampaign);
+      res.send(result);
+    });
+
+    app.get("/campaign", verifyUser, async (req, res) => {
+      const userEmail = req.query.userEmail;
+      const query = { userEmail };
+      const campaigns = await campaignCollection.find(query).toArray();
+      res.send(campaigns);
+    });
     //
 
     // Send a ping to confirm a successful connection
