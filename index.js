@@ -66,7 +66,18 @@ async function run() {
       res.send(campaigns);
     });
     //
+    // Delete
+    app.delete("/campaign/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
 
+      const result = await campaignCollection.deleteOne(query);
+      if (result.deletedCount === 1) {
+        res.send({ success: true, message: "Campaign deleted successfully!" });
+      } else {
+        res.send({ success: false, message: "Failed to delete campaign." });
+      }
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
